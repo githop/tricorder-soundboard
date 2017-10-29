@@ -609,7 +609,7 @@ h6 {
   color: #000;
   text-align: right;
   background: #fc6;
-  height: 2.0rem;
+  height: 2.3rem;
   width: 7.5rem;
   box-sizing: border-box;
   padding-left: 0.75rem;
@@ -1722,4 +1722,8 @@ a.lcars-text-box.blink {
 .button-console tricorder-button {
   width: 100%;
   text-align: center;
+}
+
+tricorder-button button {
+  width: 100% !important;
 }

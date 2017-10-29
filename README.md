@@ -1,1 +1,1 @@
-## https://githop.github.com/tricorder-soundboard/
+## https://githop.github.io/tricorder-soundboard/

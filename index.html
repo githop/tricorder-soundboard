@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#000">
+  <title>LCARS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/lcars.css">
+  <style>
+    html,
+    body {
+      background: black
+    }
+
+    p,
+    h1,
+    h2,
+    h3 {
+      margin-top: 1em;
+    }
+
+    pre {
+      display: inline;
+      white-space: pre-line;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+
+<body>
+<div class="lcars-app-container">
+
+  <!-- HEADER ==================================================== -->
+
+  <div id="header" class="lcars-row header">
+
+    <!-- ELBOW -->
+    <div class="lcars-elbow left-bottom lcars-tan-bg"></div>
+
+    <!-- BAR WITH TITLE -->
+    <div class="lcars-bar horizontal">
+      <div class="lcars-title right">TRICORDER <small>Hopkins</small></div>
+    </div>
+
+    <!-- ROUNDED EDGE DECORATED -->
+    <div class="lcars-bar horizontal right-end decorated"></div>
+  </div>
+
+  <!-- SIDE MENU ================================================= -->
+
+  <div id="left-menu" class="lcars-column start-space lcars-u-1">
+
+    <!-- FILLER -->
+    <div class="lcars-bar lcars-u-1"></div>
+  </div>
+
+  <!-- FOOTER ==================================================== -->
+
+  <div id="footer" class="lcars-row ">
+    <!-- ELBOW -->
+    <div class="lcars-elbow left-top lcars-tan-bg"></div>
+    <!-- BAR -->
+    <div class="lcars-bar horizontal both-divider bottom"></div>
+    <!-- ROUNDED EDGE -->
+    <div class="lcars-bar horizontal right-end left-divider bottom"></div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <div id="container">
+    <!-- COLUMN LAYOUT -->
+    <div class="lcars-column button-console">
+      <tricorder-button
+          class="lcars-element button lcars-eggplant-bg"
+          sound-effect="mp3s/tng_tricorder_open.mp3">
+        OPEN
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-orange-peel-bg"
+          sound-effect="mp3s/tng_chirp_clean.mp3">
+        COMMS
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-atomic-tangerine-bg"
+          sound-effect="mp3s/tng_tricorder1.mp3">
+        SCAN
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-warning-bg"
+          sound-effect="mp3s/tng_red_alert1.mp3">
+        RED ALERT
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-bahama-blue-bg"
+          sound-effect="mp3s/set_course_earth.mp3">
+        HOME
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-blue-bell-bg"
+          sound-effect="mp3s/affirmative1_ep.mp3">
+        AFFIRMATIVE
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-anakiwa-bg"
+          sound-effect="mp3s/Spock_illogical.mp3">
+        ILLOGICAL
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-periwinkle-bg"
+          sound-effect="mp3s/Spock_Livelong.mp3">
+        LL&P
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-hopbush-bg"
+          sound-effect="mp3s/tng_replicator.mp3">
+        REPLICATOR
+      </tricorder-button>
+      <tricorder-button
+          class="lcars-element button lcars-chestnut-rose-bg"
+          sound-effect="mp3s/uniforms.mp3">
+        UNIFORMS
+      </tricorder-button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+  class AudioManager {
+    constructor() {
+      this.players = {}
+    }
+
+    addPlayer(playerElm) {
+      this.players[playerElm.getAttribute('src')] = playerElm;
+    }
+
+    play(playerKey) {
+      this.togglePlayback(playerKey);
+      this.pauseOtherPlayers(playerKey);
+    }
+
+    togglePlayback(playerKey) {
+      if (this.players[playerKey].paused) {
+        this.players[playerKey].play();
+      } else {
+        this.players[playerKey].pause();
+        this.players[playerKey].currentTime = 0;
+      }
+    }
+
+    pauseOtherPlayers(playerKey) {
+      Object.keys(this.players).forEach((key) => {
+        if (key !== playerKey) {
+          this.players[key].pause();
+          this.players[key].currentTime = 0;
+        }
+      });
+    };
+  }
+
+  const manager = new AudioManager();
+
+  class TricorderBtn extends HTMLElement {
+
+    get soundEffectSrc() {
+      return this.getAttribute('sound-effect');
+    }
+
+    constructor() {
+      super();
+      this.audioElm = new Audio(this.soundEffectSrc);
+      manager.addPlayer(this.audioElm);
+      this.addEventListener('click', () => this.playSoundEffect());
+    }
+
+    playSoundEffect() {
+      manager.play(this.soundEffectSrc);
+    }
+  }
+
+  customElements.define('tricorder-button', TricorderBtn);
+
+</script>
+</body>
+
+</html>
